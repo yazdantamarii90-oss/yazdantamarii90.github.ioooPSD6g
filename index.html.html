@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberDeck Ultimate — فروشگاه کامپیوتر</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f17; --card:#0f1720; --accent:#7c3aed; --accent2:#06b6d4;
+  --glass: rgba(255,255,255,0.04); --muted:#9aa4b2; --success:#10b981;
+  --rad:16px; --gap:20px;
+  color-scheme: dark;
+}
+*{box-sizing:border-box; transition: all 0.3s ease;}
+html,body{margin:0; padding:0; font-family:'Vazir', sans-serif; background: linear-gradient(180deg,#06070a,#0b0f17); color:#e6eef8; overflow-x:hidden;}
+a{text-decoration:none; color:inherit;}
+/* LOADER */
+.loader-wrap{
+  position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,0.95); z-index:9999; flex-direction:column;
+}
+.loader{
+  width:160px; height:160px; border-radius:50%; display:grid; place-items:center;
+  backdrop-filter: blur(6px); background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow:0 8px 30px rgba(12,14,20,0.6); position:relative;
+}
+.ring{width:120px; height:120px; border-radius:50%; position:absolute; filter:blur(12px); opacity:.9}
+.ring.one{background:conic-gradient(from 90deg,var(--accent), transparent 40%);}
+.ring.two{width:90px; height:90px; background:conic-gradient(from 200deg,var(--accent2), transparent 40%); opacity:.55; filter:blur(10px);}
+.loader .logo{font-weight:900; font-size:20px; letter-spacing:2px; text-transform:uppercase;}
+.loader .subtitle{font-size:13px; color:var(--muted); margin-top:8px;}
+.loader .progress{position:absolute; bottom:-32px; font-size:14px; color:var(--muted); width:160px; text-align:center;}
+
+/* HEADER */
+header{position:sticky; top:0; z-index:20; padding:12px 24px; background:rgba(11,15,23,0.8); backdrop-filter:blur(8px); display:flex; justify-content:space-between; align-items:center; max-width:1200px; margin:auto; border-radius:16px;}
+.brand{display:flex; align-items:center; gap:12px;}
+.brand .logo-b{width:50px; height:50px; border-radius:12px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:grid; place-items:center; font-weight:900; color:#021024;}
+nav ul{display:flex; gap:14px; list-style:none; margin:0; padding:0;}
+nav li{position:relative;}
+nav a{padding:10px 14px; border-radius:12px; font-weight:600; color:var(--muted);}
+nav a:hover{color:#fff; transform:translateY(-3px);}
+nav a::after{content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:var(--accent); transition:0.4s;}
+nav a:hover::after{width:100%;}
+.actions{display:flex; gap:10px;}
+.btn{padding:12px 16px; border-radius:12px; background:var(--glass); border:1px solid rgba(255,255,255,0.03); cursor:pointer; backdrop-filter: blur(6px);}
+.cta{background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#021024; font-weight:700;}
+
+/* HERO */
+.hero{max-width:1200px; margin:32px auto; padding:32px; border-radius:20px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow:0 14px 50px rgba(2,6,23,0.7); display:grid; grid-template-columns:1fr 440px; gap:28px; align-items:center;}
+.hero-left h1{font-size:38px; margin:0 0 12px; line-height:1.05;}
+.hero-left p{color:var(--muted); margin:0 0 20px; line-height:1.5;}
+.search{display:flex; gap:10px;}
+.search input{flex:1; padding:14px 16px; border-radius:14px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:inherit;}
+.search button{padding:14px 18px; border-radius:14px; border:none; background:var(--accent); color:#021024; font-weight:700; cursor:pointer;}
+.badges{display:flex; gap:12px; margin-top:20px;}
+.badge{padding:10px 12px; border-radius:999px; background:var(--glass); color:var(--muted); font-weight:700; transition:0.3s;}
+.badge:hover{background:var(--accent); color:#fff;}
+.hero-right{position:relative;}
+.showcase{border-radius:16px; padding:20px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); backdrop-filter: blur(8px); box-shadow:0 12px 40px rgba(2,6,23,0.7);}
+.showcase .pc{display:flex; gap:14px; align-items:center;}
+.showcase .pc .img{width:140px; height:100px; border-radius:12px; background:linear-gradient(180deg,#061226,#081022); display:grid; place-items:center; font-weight:900; color:#fff;}
+.price{font-weight:900; font-size:22px;}
+.specs{color:var(--muted); font-size:14px;}
+
+/* PRODUCTS */
+.products{max-width:1200px; margin:32px auto; padding:10px 14px;}
+.products h2{margin-bottom:16px;}
+.grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+.card{
+  background:var(--glass); backdrop-filter:blur(12px); border-radius:20px; overflow:hidden; position:relative;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.4s ease; border:2px solid transparent; cursor:pointer;
+}
+.card:hover{transform:translateY(-12px) scale(1.05); box-shadow:0 20px 60px rgba(0,0,0,0.5); border-image: linear-gradient(90deg,#06b6d4,#ff00ff,#ffbb00) 1; border-style: solid;}
+.card .thumb{height:180px; border-radius:16px; background:linear-gradient(135deg,#0f1720,#1e293b); display:grid; place-items:center; font-weight:900; font-size:18px; color:#fff;}
+.card h4{margin:12px 0 6px;}
+.card p{margin:0; color:var(--muted); font-size:14px; line-height:1.4;}
+.price-row{display:flex; justify-content:space-between; align-items:center; margin-top:12px;}
+.add{padding:10px 14px; border-radius:12px; background:linear-gradient(90deg,#7c3aed,#06b6d4); color:#fff; font-weight:700; border:none; cursor:pointer; transition:transform 0.3s;}
+.add:hover{transform:scale(1.05);}
+
+/* 3D Tilt + Shine */
+.tilt{transform-style:preserve-3d; will-change:transform;}
+.card .shine{position:absolute; inset:0; background:linear-gradient(120deg, rgba(255,255,255,0.08), rgba(255,255,255,0)); opacity:0; pointer-events:none; transition:opacity 0.2s;}
+.card:hover .shine{opacity:1;}
+
+/* FOOTER */
+footer{max-width:1200px; margin:36px auto; padding:20px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; color:var(--muted); font-size:14px;}
+
+/* RESPONSIVE */
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)} .hero{grid-template-columns:1fr 1fr} .hero-right{display:none}}
+@media(max-width:640px){nav ul{display:none} .grid{grid-template-columns:1fr} .hero{grid-template-columns:1fr;padding:20px}}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loaderWrap" class="loader-wrap" aria-hidden="false">
+  <div class="loader" role="status" aria-live="polite">
+    <div class="ring one"></div>
+    <div class="ring two"></div>
+    <div style="z-index:10;text-align:center">
+      <div class="logo">CYBERDECK</div>
+      <div class="subtitle">Ultimate PC & Gaming Store</div>
+      <div class="progress" id="prog">در حال بارگذاری 0%</div>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="brand">
+    <div class="logo-b">C</div>
+    <span>CyberDeck</span>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#">خانه</a></li>
+      <li><a href="#">محصولات</a></li>
+      <li><a href="#">درباره ما</a></li>
+      <li><a href="#">تماس</a></li>
+    </ul>
+  </nav>
+  <div class="actions">
+    <button class="btn">ورود</button>
+    <button class="cta">سبد خرید</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-left">
+      <h1>جدیدترین و حرفه‌ای‌ترین محصولات گیمینگ</h1>
+      <p>با بهترین قیمت و کیفیت، تجهیزات کامل گیمینگ را از CyberDeck تجربه کنید.</p>
+      <div class="search">
+        <input type="text" placeholder="جستجوی محصول...">
+        <button>جستجو</button>
+      </div>
+      <div class="badges">
+        <div class="badge">موس</div>
+        <div class="badge">کیبورد</div>
+        <div class="badge">کارت گرافیک</div>
+        <div class="badge">رم</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="showcase">
+        <div class="pc">
+          <div class="img">CYBER PC</div>
+          <div>
+            <div class="price">42,990,000 تومان</div>
+            <div class="specs">RTX 4090 • Intel i9 • 64GB RAM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="products" class="products">
+    <h2>پرفروش‌ها</h2>
+    <div class="grid" id="grid">
+      <article class="card tilt" tabindex="0">
+        <div class="shine"></div>
+        <div class="thumb">MOUSE</div>
+        <h4>موس گیمینگ RAZOR X2</h4>
+        <p>سنسور 20K DPI • RGB • 8 دکمه</p>
+        <div class="price-row">
+          <div>2,599,000 تومان</div>
+          <button class="add" onclick="addToCart('RAZOR X2')">افزودن</button>
+        </div>
+      </article>
+      <article class="card tilt" tabindex="0">
+        <div class="shine"></div>
+        <div class="thumb">KB</div>
+        <h4>کیبورد مکانیکی K-STRIKE</h4>
+        <p>سوئیچ آبی • RGB • فریم فلزی</p>
+        <div class="price-row">
+          <div>3,299,000 تومان</div>
+          <button class="add" onclick="addToCart('K-STRIKE')">افزودن</button>
+        </div>
+      </article>
+      <article class="card tilt" tabindex="0">
+        <div class="shine"></div>
+        <div class="thumb">GPU</div>
+        <h4>کارت گرافیک NOVA RTX</h4>
+        <p>12GB • Ray Tracing • RGB</p>
+        <div class="price-row">
+          <div>22,450,000 تومان</div>
+          <button class="add" onclick="addToCart('NOVA RTX')">افزودن</button>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>© 2025 CyberDeck Ultimate</div>
+  <div>تمامی حقوق محفوظ است</div>
+</footer>
+
+<script>
+// Loader انیمیشن درصد واقعی
+let prog = document.getElementById('prog');
+let loader = document.getElementById('loaderWrap');
+let percent = 0;
+let interval = setInterval(()=>{
+  percent += Math.floor(Math.random()*5)+1;
+  if(percent>=100) percent=100;
+  prog.innerText = `در حال بارگذاری ${percent}%`;
+  if(percent===100){
+    clearInterval(interval);
+    setTimeout(()=>{loader.style.opacity='0'; loader.style.pointerEvents='none';},400);
+  }
+},100);
+
+// Tilt ساده
+document.querySelectorAll('.tilt').forEach(card=>{
+  card.addEventListener('mousemove', e=>{
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width/2;
+    const cy = rect.height/2;
+    const dx = (x - cx)/10;
+    const dy = (y - cy)/10;
+    card.style.transform = `rotateY(${dx}deg) rotateX(${-dy}deg) scale(1.05)`;
+  });
+  card.addEventListener('mouseleave', ()=>{card.style.transform='translateY(0) scale(1)';});
+});
+
+function addToCart(name){alert(`${name} به سبد خرید اضافه شد!`);}
+</script>
+
+</body>
+</html>
